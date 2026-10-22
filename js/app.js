@@ -403,7 +403,7 @@ function vDependencias(v){
 }
 
 /* ======================= EVENTOS ======================= */
-window.TABLERO={AGG,EJES,ACCN,ACC_TXT,LOGROS,POB,ATN,METAS,VIGS,S,PAL,ACT,VIS,fmt,pct,estado,vigTxt,ejeDe,toast};
+window.TABLERO={AGG,EJES,ACCN,ACC_TXT,LOGROS,POB,ATN,METAS,VIGS,S,PAL,ACT,VIS,fmt,pct,estado,vigTxt,ejeDe,toast,setEje,setVig,modalAct,modalAcc};
 barraUI();
 addEventListener('hashchange',render);
 addEventListener('resize',()=>charts.forEach(c=>c.resize()));

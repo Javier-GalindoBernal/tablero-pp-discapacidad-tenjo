@@ -14,6 +14,11 @@ Tablero interactivo con el avance, los logros y la población beneficiada de la 
 
 La vigencia y el eje seleccionados en la barra superior se aplican a todas las páginas. El botón de luna o sol cambia entre tema claro y oscuro; la elección se recuerda en el navegador.
 
+## Asistente JUAICO
+JUAICO es el asistente conversacional del tablero. Responde preguntas en lenguaje natural sobre el contenido de la política: avance por vigencia, eje, línea o acción; acciones rezagadas o con mejor desempeño; acciones sin programación; comparativos entre vigencias; población beneficiada; logros; dependencias; metas del Plan de Desarrollo; metodología y recomendaciones de priorización. También busca actividades por tema (subsidio, PIAR, certificación, tamizaje, apoyos nutricionales, etc.).
+
+Funciona en el navegador con un motor de comprensión basado en reglas que identifica la intención y las entidades de la pregunta y calcula la respuesta con los datos del tablero; no envía información a servidores externos. Incluye una biblioteca de preguntas sugeridas, preguntas de seguimiento (por ejemplo, "¿y en 2024?") y accesos directos a las páginas del tablero.
+
 ## Informes en PDF
 La página **Informes PDF** genera en el navegador un informe de avance en tamaño carta: se elige la vigencia, el eje y las secciones (resumen, avance, logros, población, actividades, dependencias y PDT). También hay informes rápidos por vigencia.
 
