@@ -14,6 +14,9 @@ Tablero interactivo con el avance, los logros y la población beneficiada de la 
 
 La vigencia y el eje seleccionados en la barra superior se aplican a todas las páginas. El botón de luna o sol cambia entre tema claro y oscuro; la elección se recuerda en el navegador.
 
+## Informes en PDF
+La página **Informes PDF** genera en el navegador un informe de avance en tamaño carta: se elige la vigencia, el eje y las secciones (resumen, avance, logros, población, actividades, dependencias y PDT). También hay informes rápidos por vigencia.
+
 ## Metodología
 - Cumplimiento de cada actividad: ejecución de los semestres 1 y 2 sobre lo programado, con un máximo de 100 %.
 - Cumplimiento de cada acción: promedio de sus actividades. Cumplimiento del plan: promedio de las acciones gestionadas en la vigencia.

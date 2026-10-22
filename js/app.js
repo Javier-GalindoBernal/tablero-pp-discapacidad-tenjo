@@ -109,7 +109,7 @@ function progHTML(c,col){return `<div class="prog"><span data-w="${Math.min(c,10
 const vigTxt=y=>y===2026?'2026 (corte octubre)':String(y);
 
 /* ======================= MARCO ======================= */
-const RUTAS={inicio:['Resumen ejecutivo',vInicio],avance:['Avance por eje y acción',vAvance],logros:['Logros obtenidos',vLogros],poblacion:['Población beneficiada',vPoblacion],actividades:['Explorador de actividades',vActividades],dependencias:['Dependencias y Plan de Desarrollo',vDependencias]};
+const RUTAS={inicio:['Resumen ejecutivo',vInicio],avance:['Avance por eje y acción',vAvance],logros:['Logros obtenidos',vLogros],poblacion:['Población beneficiada',vPoblacion],actividades:['Explorador de actividades',vActividades],dependencias:['Dependencias y Plan de Desarrollo',vDependencias],informes:['Informes de avance en PDF',v=>window.vInformes(v)]};
 function ruta(){return (location.hash.replace('#/','').split('?')[0])||'inicio'}
 function render(){
   const r=RUTAS[ruta()]?ruta():'inicio';
@@ -403,6 +403,7 @@ function vDependencias(v){
 }
 
 /* ======================= EVENTOS ======================= */
+window.TABLERO={AGG,EJES,ACCN,ACC_TXT,LOGROS,POB,ATN,METAS,VIGS,S,PAL,ACT,VIS,fmt,pct,estado,vigTxt,ejeDe,toast};
 barraUI();
 addEventListener('hashchange',render);
 addEventListener('resize',()=>charts.forEach(c=>c.resize()));
