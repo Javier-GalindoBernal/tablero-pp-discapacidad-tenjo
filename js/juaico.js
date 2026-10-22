@@ -271,10 +271,10 @@ window.incluResponder=responder;window.juaicoPreguntas=PREGUNTAS;
 /* ======================= INTERFAZ ======================= */
 function montar(){
   const fab=document.createElement('button');fab.className='ia-fab';fab.id='iaFab';fab.setAttribute('aria-label','Abrir el asistente '+NOMBRE);
-  fab.innerHTML=`<img src="assets/juaico.svg" alt=""><span class="ia-fab-txt"><b>Pregúntale a ${NOMBRE}</b><small>Asistente del tablero</small></span>`;
+  fab.innerHTML=`<span class="ia-fab-av"><span class="ia-ring"></span><span class="ia-ring r2"></span><img src="assets/juaico.jpg" alt=""><i class="ia-star s1"></i><i class="ia-star s2"></i><i class="ia-star s3"></i></span><span class="ia-fab-txt"><b>Pregúntale a ${NOMBRE}</b><small>Asistente del tablero</small></span><span class="ia-burbuja">¡Hola! Soy ${NOMBRE} 👋</span>`;
   const pnl=document.createElement('section');pnl.className='ia-pnl';pnl.id='iaPnl';pnl.setAttribute('aria-label','Asistente '+NOMBRE);
-  pnl.innerHTML=`<header class="ia-h"><img src="assets/juaico.svg" alt=""><div><b>${NOMBRE}</b><small><span class="ia-on"></span>Asistente de la PP de Discapacidad</small></div>
-     <button class="ia-hb" id="iaLib" title="Preguntas sugeridas"><i class="fa-solid fa-lightbulb"></i></button><button class="ia-hb" id="iaClr" title="Nueva conversación"><i class="fa-solid fa-rotate-left"></i></button><button class="ia-hb" id="iaX" title="Cerrar"><i class="fa-solid fa-xmark"></i></button></header>
+  pnl.innerHTML=`<header class="ia-h"><img src="assets/juaico.jpg" alt=""><div><b>${NOMBRE}</b><small><span class="ia-on"></span>Asistente de la PP de Discapacidad</small></div>
+     <button class="ia-hb" id="iaWel" title="Ver bienvenida"><i class="fa-solid fa-hand-sparkles"></i></button><button class="ia-hb" id="iaLib" title="Preguntas sugeridas"><i class="fa-solid fa-lightbulb"></i></button><button class="ia-hb" id="iaClr" title="Nueva conversación"><i class="fa-solid fa-rotate-left"></i></button><button class="ia-hb" id="iaX" title="Cerrar"><i class="fa-solid fa-xmark"></i></button></header>
    <div class="ia-msgs" id="iaMsgs" aria-live="polite"></div>
    <div class="ia-lib" id="iaLibBox" hidden></div>
    <form class="ia-in" id="iaForm"><input id="iaQ" autocomplete="off" placeholder="Pregúntale a ${NOMBRE}… ej. avance de la acción 1.3.4" aria-label="Escribe tu pregunta"><button aria-label="Enviar"><i class="fa-solid fa-paper-plane"></i></button></form>
@@ -291,15 +291,52 @@ function montar(){
   msgs.onclick=ev=>{const c=ev.target.closest('[data-q]');if(c)return enviar(c.dataset.q);const cp=ev.target.closest('[data-copy]');if(cp){const t=cp.dataset.copy;const ok=()=>T().toast('Texto copiado');const alt=()=>{const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();ok()};if(navigator.clipboard)navigator.clipboard.writeText(t).then(ok,alt);else alt();return}const g=ev.target.closest('[data-go]');if(g)irA(JSON.parse(g.dataset.go));const a=ev.target.closest('[data-acc]');if(a){const d=JSON.parse(a.dataset.acc);const x=T().AGG[d.y].acc[d.acc];if(x){T().setVig(d.y);T().modalAcc(x)}}};
   addEventListener('keydown',ev=>{if(ev.key==='Escape'&&pnl.classList.contains('on')&&!document.querySelector('.modal.on'))cerrar()});
   document.querySelectorAll('[data-ia-open]').forEach(a=>a.addEventListener('click',ev=>{ev.preventDefault();abrir()}));
-  try{if(!sessionStorage.getItem('iaHola')){setTimeout(()=>fab.classList.add('hola'),1800);setTimeout(()=>fab.classList.remove('hola'),9000);sessionStorage.setItem('iaHola','1')}}catch(e){}
+  /* ---- Ventana de bienvenida ---- */
+  const wel=document.createElement('div');wel.className='jw';wel.id='jw';wel.setAttribute('role','dialog');wel.setAttribute('aria-modal','true');wel.setAttribute('aria-label','Bienvenida de '+NOMBRE);
+  const estrellas=Array.from({length:22},(_,i)=>`<i style="left:${(i*37)%100}%;top:${(i*53)%62}%;animation-delay:${(i%7)*.45}s;transform:scale(${.6+(i%4)*.25})"></i>`).join('');
+  wel.innerHTML=`<div class="jw-card">
+     <div class="jw-arte"><div class="jw-img"><img src="assets/juaico-bienvenida.jpg" alt="${NOMBRE}, el asistente del tablero, saludando con el municipio de Tenjo al fondo"></div><div class="jw-stars">${estrellas}</div><span class="jw-badge"><i class="fa-solid fa-wand-magic-sparkles"></i> Asistente del tablero</span></div>
+     <div class="jw-txt">
+       <button class="jw-x" aria-label="Cerrar bienvenida"><i class="fa-solid fa-xmark"></i></button>
+       <span class="jw-kick">Alcaldía de Tenjo · Política Pública de Discapacidad</span>
+       <h2>¡Hola! Soy <span>${NOMBRE}</span> 👋</h2>
+       <p class="jw-type" id="jwType"></p>
+       <ul class="jw-list">
+         <li style="--d:.2s"><i class="fa-solid fa-chart-line"></i>Te cuento el avance de cada vigencia, eje, línea y acción</li>
+         <li style="--d:.35s"><i class="fa-solid fa-people-group"></i>Te muestro la población beneficiada y los logros</li>
+         <li style="--d:.5s"><i class="fa-solid fa-lightbulb"></i>Te sugiero prioridades y redacto textos de resultados</li>
+         <li style="--d:.65s"><i class="fa-solid fa-file-pdf"></i>Te llevo a los informes en PDF y a cada página del tablero</li>
+       </ul>
+       <div class="jw-btns"><button class="jw-b1" id="jwChat"><i class="fa-solid fa-comments"></i> Conversar con ${NOMBRE}</button><button class="jw-b2" id="jwTab"><i class="fa-solid fa-gauge-high"></i> Explorar el tablero</button></div>
+       <label class="jw-no"><input type="checkbox" id="jwNo"> No volver a mostrar esta bienvenida</label>
+     </div></div>`;
+  document.body.appendChild(wel);
+  const SALUDO='Soy el asistente de la Política Pública de Inclusión para Personas con Discapacidad y sus Familias de Tenjo. Estoy aquí para ayudarte a entender el tablero: pregúntame lo que quieras sobre su avance y sus resultados.';
+  let tTimer=null;
+  function escribir(){const el=$('#jwType');el.textContent='';el.classList.add('cur');let i=0;clearInterval(tTimer);
+    if(matchMedia('(prefers-reduced-motion: reduce)').matches){el.textContent=SALUDO;el.classList.remove('cur');return}
+    tTimer=setInterval(()=>{el.textContent=SALUDO.slice(0,++i);if(i>=SALUDO.length){clearInterval(tTimer);setTimeout(()=>el.classList.remove('cur'),1200)}},18)}
+  function verBienvenida(){wel.classList.add('on');document.body.classList.add('jw-abierta');setTimeout(escribir,450);setTimeout(()=>$('#jwChat').focus(),500)}
+  function cerrarBienvenida(){wel.classList.remove('on');document.body.classList.remove('jw-abierta');clearInterval(tTimer);
+    try{sessionStorage.setItem('jwVisto','1');if($('#jwNo').checked)localStorage.setItem('jwNo','1')}catch(e){}
+    setTimeout(()=>{fab.classList.add('hola');setTimeout(()=>fab.classList.remove('hola'),6000)},500)}
+  $('#jwChat').onclick=()=>{cerrarBienvenida();setTimeout(abrir,250)};
+  $('#jwTab').onclick=cerrarBienvenida;wel.querySelector('.jw-x').onclick=cerrarBienvenida;
+  wel.onclick=ev=>{if(ev.target===wel)cerrarBienvenida()};
+  addEventListener('keydown',ev=>{if(ev.key==='Escape'&&wel.classList.contains('on'))cerrarBienvenida()});
+  $('#iaWel').onclick=()=>{cerrar();setTimeout(verBienvenida,200)};
+  window.juaicoBienvenida=verBienvenida;
+  let mostrar=true;try{mostrar=!sessionStorage.getItem('jwVisto')&&localStorage.getItem('jwNo')!=='1'}catch(e){}
+  if(mostrar)setTimeout(verBienvenida,900);
+  else try{if(!sessionStorage.getItem('iaHola')){setTimeout(()=>fab.classList.add('hola'),1800);setTimeout(()=>fab.classList.remove('hola'),9000);sessionStorage.setItem('iaHola','1')}}catch(e){}
   function libHTML(){return PREGUNTAS.map(([c,ic,qs])=>`<div class="ia-cat"><h6><i class="fa-solid ${ic}"></i>${c}</h6>${qs.map(q=>`<button data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>`).join('')}
-  function bienvenida(){bot({html:`<p>¡Hola! Soy <b>${NOMBRE}</b> 👋, el asistente del tablero de la Política Pública de Inclusión para Personas con Discapacidad de Tenjo.</p><p>Pregúntame por el avance de una vigencia, eje, línea o acción, por la población beneficiada, los logros o las dependencias.</p>`,chips:['¿Cómo va la política en 2026?','Dame el avance de la línea estratégica 1.3','¿Cuáles son las acciones más rezagadas?','¿Cuál es la población beneficiada?','Ver todas las preguntas']},true)}
+  function bienvenida(){bot({html:`<div class="ia-banner"><img src="assets/juaico-bienvenida.jpg" alt="${NOMBRE} saludando desde Tenjo"><span class="ia-tw t1"></span><span class="ia-tw t2"></span><span class="ia-tw t3"></span><span class="ia-tw t4"></span></div><p>¡Hola! Soy <b>${NOMBRE}</b> 👋, el asistente del tablero de la Política Pública de Inclusión para Personas con Discapacidad de Tenjo.</p><p>Pregúntame por el avance de una vigencia, eje, línea o acción, por la población beneficiada, los logros o las dependencias.</p>`,chips:['¿Cómo va la política en 2026?','Dame el avance de la línea estratégica 1.3','¿Cuáles son las acciones más rezagadas?','¿Cuál es la población beneficiada?','Ver todas las preguntas']},true)}
   function user(t){const d=document.createElement('div');d.className='ia-m u';d.innerHTML=`<div class="ia-b">${esc(t)}</div>`;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight}
   function bot(r,inst){const d=document.createElement('div');d.className='ia-m b';
     const tools=`${r.ir?`<button class="ia-go" data-go='${esc(JSON.stringify(r.ir))}'><i class="fa-solid fa-arrow-up-right-from-square"></i>${esc(r.ir.label)}</button>`:''}${r.copiar?`<button class="ia-go" data-copy="${esc(r.copiar)}"><i class="fa-solid fa-copy"></i>Copiar texto</button>`:''}${r.accion?`<button class="ia-go" data-acc='${esc(JSON.stringify(r.accion))}'><i class="fa-solid fa-magnifying-glass-chart"></i>Ver ficha de la acción</button>`:''}`;
-    d.innerHTML=`<img src="assets/juaico.svg" alt=""><div class="ia-b">${r.html}${r.todas?`<div class="ia-libin">${libHTML()}</div>`:''}${tools?`<div class="ia-tools">${tools}</div>`:''}${r.chips&&r.chips.length?`<div class="ia-chips">${r.chips.map(c=>`<button data-q="${esc(c)}">${esc(c)}</button>`).join('')}</div>`:''}</div>`;
+    d.innerHTML=`<img src="assets/juaico.jpg" alt=""><div class="ia-b">${r.html}${r.todas?`<div class="ia-libin">${libHTML()}</div>`:''}${tools?`<div class="ia-tools">${tools}</div>`:''}${r.chips&&r.chips.length?`<div class="ia-chips">${r.chips.map(c=>`<button data-q="${esc(c)}">${esc(c)}</button>`).join('')}</div>`:''}</div>`;
     if(inst){msgs.appendChild(d);return}
-    const t=document.createElement('div');t.className='ia-m b';t.innerHTML='<img src="assets/juaico.svg" alt=""><div class="ia-b ia-typing"><i></i><i></i><i></i></div>';msgs.appendChild(t);msgs.scrollTop=msgs.scrollHeight;
+    const t=document.createElement('div');t.className='ia-m b';t.innerHTML='<img src="assets/juaico.jpg" alt=""><div class="ia-b ia-typing"><i></i><i></i><i></i></div>';msgs.appendChild(t);msgs.scrollTop=msgs.scrollHeight;
     setTimeout(()=>{t.replaceWith(d);d.classList.add('in');msgs.scrollTop=msgs.scrollHeight-d.offsetHeight-20},450+Math.random()*350)}
   function enviar(t){user(t);let r;try{r=responder(t)}catch(err){console.error(err);r={html:'<p>Tuve un problema al calcular esa respuesta. Intenta formularla de otra manera.</p>'}}bot(r)}
   function irA(o){if(o.vig&&o.vig!==T().S.vig)T().setVig(o.vig);if(o.eje!=null&&o.eje!==T().S.eje)T().setEje(o.eje);location.hash='#/'+o.ruta;if(innerWidth<760)cerrar()}
