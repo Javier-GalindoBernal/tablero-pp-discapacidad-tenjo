@@ -528,3 +528,17 @@ body.jw-abierta .ia-fab{opacity:0;pointer-events:none}
 @media (max-width:820px){.jw-arte{min-height:300px}.jw-galaxia{width:200px;height:120px}.jw-luna{width:46px;height:46px}.jw-globo{font-size:15px;top:22%}}
 @media (max-width:720px){.ia-fab-av{width:84px;height:108px}.ia-fab-av img.ia-pj{height:96px!important}.ia-pnl{overflow:hidden}.ia-h img.ia-h-pj{height:54px;margin:-8px 0 -8px -2px}}
 @media (prefers-reduced-motion:reduce){.ia-fab-av img.ia-pj,.jw-pj,.jw-pj-wrap,.jw-globo,.ia-banner-pj,.ia-h-pj{animation:none!important;opacity:1!important}.jw-pj-wrap{transform:translateX(-50%)}}
+
+/* ================= Firma Global Analitik ================= */
+.foot{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.foot-txt{flex:1;min-width:260px}
+.firma{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--borde);border-radius:14px;padding:7px 14px;box-shadow:var(--sombra)}
+.firma span{font:700 11px 'Montserrat';letter-spacing:.06em;text-transform:uppercase;color:#5B6670}
+.firma img{height:34px;width:auto;display:block}
+.sb-firma{background:#fff;border-radius:12px;padding:8px 10px;display:flex;flex-direction:column;align-items:center;gap:4px}
+.sb-firma small{font:700 9.5px 'Montserrat';letter-spacing:.08em;text-transform:uppercase;color:#5B6670}
+.sb-firma img{width:100%;max-width:190px;height:auto;display:block;border-radius:0!important;box-shadow:none!important}
+[data-theme="dark"] .firma{background:#fff;border-color:#fff}
+@media (max-width:720px){.foot{flex-direction:column;align-items:flex-start}.firma img{height:28px}}
+.foot{padding-right:150px}
+@media (max-width:720px){.foot{padding-right:16px;padding-bottom:120px}}

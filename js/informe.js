@@ -66,7 +66,7 @@ async function generar(o){
   const doc=new jsPDF({unit:'mm',format:'letter',compress:true});
   const W=215.9,H=279.4,M=16,CW=W-2*M;let y=0;
   const g=T.AGG[o.vig],e=o.eje?T.ejeDe(o.eje):null;
-  const [esc64,sec64]=await Promise.all([imgData('assets/escudo-tenjo.png'),imgData('assets/secretaria-planeacion.jpg')]);
+  const [esc64,sec64,ga64]=await Promise.all([imgData('assets/escudo-tenjo.png'),imgData('assets/secretaria-planeacion.jpg'),imgData('assets/global-analitik.png')]);
   const hoy=new Date().toLocaleDateString('es-CO',{day:'numeric',month:'long',year:'numeric'});
 
   const nueva=()=>{doc.addPage();cabMini();y=30};
@@ -98,6 +98,7 @@ async function generar(o){
   doc.addImage(sec64,'JPEG',W-M-44,13,44,22.4,'secretaria','FAST');
   franja(W-M-44,40,44);
   doc.setTextColor(...RGB.gris);doc.setFontSize(8.5);doc.text(txt(`Generado el ${hoy} · Tablero de seguimiento de la política`),M,72);
+  doc.setFontSize(7.5);doc.text('Desarrollado por',W-M-44,72,{align:'right'});doc.addImage(ga64,'PNG',W-M-42,67.2,42,13.3,'global','FAST');
   y=82;
 
   const cum=e?g.ejes[e.id].cumpl:g.cumpl,pond=e?g.ejes[e.id].pond:g.pond,gest=e?g.ejes[e.id].gest:g.gest,tot=e?e.nAcc:22;
@@ -210,6 +211,8 @@ async function generar(o){
   doc.setDrawColor(...RGB.borde);doc.line(M,y,W-M,y);y+=6;
   doc.setTextColor(...RGB.verde);doc.setFont('helvetica','bold');doc.setFontSize(10);doc.text('Metodología',M,y);y+=5;
   para('Cumplimiento de cada actividad: ejecución de los semestres 1 y 2 sobre la cantidad programada, con un máximo de 100 %. Cumplimiento de cada acción: promedio de sus actividades. Cumplimiento del plan: promedio de las acciones gestionadas en la vigencia. Avance ponderado: cumplimiento de cada eje ponderado con los pesos oficiales de la matriz (38,79 %, 26,72 % y 34,48 %). Fuente: matriz de seguimiento de la política y relación con el Plan de Desarrollo Territorial.',8.5,RGB.gris);
+
+  espacio(26);y+=4;doc.setDrawColor(...RGB.borde);doc.line(M,y,W-M,y);y+=6;doc.setTextColor(...RGB.gris);doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.text('Tablero e informe desarrollados por Global Analitik SAS · le damos valor a sus datos.',M,y+5);doc.addImage(ga64,'PNG',W-M-44,y-1,44,14,'global','FAST');y+=18;
 
   /* ---------- Pie de página ---------- */
   const n=doc.getNumberOfPages();
