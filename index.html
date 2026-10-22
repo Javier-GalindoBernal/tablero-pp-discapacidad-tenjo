@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tablero PP Discapacidad · Tenjo</title>
+<meta name="description" content="Tablero interactivo de seguimiento a la Política Pública de Inclusión para Personas con Discapacidad y sus Familias del municipio de Tenjo, vigencias 2024 a 2026.">
+<link rel="icon" href="assets/escudo-tenjo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="css/app.css?v=1">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+</head>
+<body>
+<div class="app">
+  <aside class="sb" id="sb">
+    <div class="brand">
+      <img src="assets/escudo-tenjo.png" alt="Escudo de Tenjo">
+      <div><b>Alcaldía de Tenjo</b><span>Política Pública de Inclusión para Personas con Discapacidad y sus Familias</span></div>
+    </div>
+    <nav class="nav" id="nav">
+      <a href="#/inicio" data-r="inicio"><i class="fa-solid fa-gauge-high"></i><span>Resumen ejecutivo</span></a>
+      <a href="#/avance" data-r="avance"><i class="fa-solid fa-chart-column"></i><span>Avance por eje y acción</span></a>
+      <a href="#/logros" data-r="logros"><i class="fa-solid fa-trophy"></i><span>Logros</span></a>
+      <a href="#/poblacion" data-r="poblacion"><i class="fa-solid fa-people-group"></i><span>Población beneficiada</span></a>
+      <a href="#/actividades" data-r="actividades"><i class="fa-solid fa-table-list"></i><span>Explorador de actividades</span></a>
+      <a href="#/dependencias" data-r="dependencias"><i class="fa-solid fa-sitemap"></i><span>Dependencias y PDT</span></a>
+    </nav>
+    <div class="sb-foot">
+      <img src="assets/secretaria-planeacion.jpg" alt="Secretaría de Planeación y Desarrollo Territorial">
+      <small><i class="fa-regular fa-calendar"></i> Corte 2026: octubre</small>
+    </div>
+  </aside>
+  <div class="sb-back" id="sbBack"></div>
+
+  <div class="main">
+    <header class="top">
+      <button class="ico-btn burger" id="burger" aria-label="Abrir menú"><i class="fa-solid fa-bars"></i></button>
+      <div class="ttl"><small id="crumb">Tablero de seguimiento</small><h1 id="pageTitle">Resumen ejecutivo</h1></div>
+      <div class="vig" id="vig" role="group" aria-label="Vigencia"></div>
+      <div class="filtro" id="filtro" role="group" aria-label="Filtrar por eje"></div>
+      <button class="ico-btn" id="fs" title="Pantalla completa" aria-label="Pantalla completa"><i class="fa-solid fa-expand"></i></button>
+    </header>
+    <div class="view" id="view"></div>
+    <footer class="foot">
+      Fuente: matriz de seguimiento de la política y relación con el Plan de Desarrollo Territorial · Vigencias 2024–2026 (2026 con corte a octubre) ·
+      Escudo: <a href="https://commons.wikimedia.org/wiki/File:Escudo_de_Tenjo.svg" target="_blank" rel="noopener">SajoR, Wikimedia Commons</a> (CC BY-SA 2.5)
+    </footer>
+  </div>
+</div>
+
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="modal-box" role="dialog" aria-modal="true">
+    <button class="ico-btn cerrar" id="cerrar" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="data/datos.js?v=1"></script>
+<script src="js/app.js?v=1"></script>
+</body>
+</html>
