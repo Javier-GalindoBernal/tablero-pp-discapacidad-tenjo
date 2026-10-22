@@ -392,3 +392,7 @@ a.ico-btn{text-decoration:none}
 .ia-foot{font-size:11px;color:var(--gris-2);text-align:center;padding:0 12px 10px;background:var(--tarjeta)}
 [data-theme="dark"] .ia-chips button,[data-theme="dark"] .ia-lib button,[data-theme="dark"] .ia-libin button{color:#7CD39B}
 @media (max-width:720px){.ia-pnl{right:0;bottom:0;width:100vw;max-width:100vw;height:100vh;border-radius:0}.ia-fab{right:14px;bottom:14px}.ia-fab img{width:52px;height:52px}}
+.ia-big{display:flex;align-items:center;gap:12px;background:var(--suave);border-radius:12px;padding:10px 12px;margin-bottom:8px}
+.ia-big b{font:800 30px 'Montserrat';color:var(--verde);line-height:1}
+.ia-big span{font-size:13.5px;font-weight:600}
+.ia-texto{background:var(--suave);border-left:4px solid #E8BE07;border-radius:10px;padding:10px 12px;font-size:13.5px;line-height:1.55;white-space:pre-wrap}
