@@ -109,7 +109,7 @@ function progHTML(c,col){return `<div class="prog"><span data-w="${Math.min(c,10
 const vigTxt=y=>y===2026?'2026 (corte octubre)':String(y);
 
 /* ======================= MARCO ======================= */
-const RUTAS={inicio:['Resumen ejecutivo',vInicio],avance:['Avance por eje y acción',vAvance],logros:['Logros obtenidos',vLogros],poblacion:['Población beneficiada',vPoblacion],actividades:['Explorador de actividades',vActividades],dependencias:['Dependencias y Plan de Desarrollo',vDependencias],informes:['Informes de avance en PDF',v=>window.vInformes(v)]};
+const RUTAS={inicio:['Resumen ejecutivo',vInicio],avance:['Avance por eje y acción',vAvance],logros:['Logros obtenidos',vLogros],poblacion:['Población beneficiada',vPoblacion],actividades:['Explorador de actividades',vActividades],dependencias:['Dependencias y Plan de Desarrollo',vDependencias],informes:['Informes PDF',v=>window.vInformes(v)]};
 function ruta(){return (location.hash.replace('#/','').split('?')[0])||'inicio'}
 function render(){
   const r=RUTAS[ruta()]?ruta():'inicio';
