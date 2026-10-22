@@ -3,12 +3,20 @@
 'use strict';
 
 /* ======================= DATOS ======================= */
-const C={verde:'#055B2A',verde2:'#0B7A3B',amarillo:'#E8BE07',azul:'#1F6FB2',tinta:'#15201A',gris:'#5B6670'};
+const PAL={
+  light:{verde:'#055B2A',verde2:'#0B7A3B',amarillo:'#E8BE07',azul:'#1F6FB2',tinta:'#15201A',gris:'#5B6670',axis:'#DDE5DF',grid:'#EEF2EF',track:'#EEF3EF',bd:'#FFFFFF',dim:'#C9DCCF',acc:'#055B2A',amTxt:'#8F7200',sa:['#FAFCFB','#F2F7F4'],
+    ej:[['#055B2A','#E3F0E7'],['#8F7200','#FBF1C7'],['#17588F','#E1EDF8']]},
+  dark:{verde:'#2E9E5B',verde2:'#3DB56F',amarillo:'#E8BE07',azul:'#4C95D6',tinta:'#E4EEE7',gris:'#A7B6AD',axis:'#2A3D32',grid:'#1F3027',track:'#1C2B23',bd:'#121E17',dim:'#2B4436',acc:'#7CD39B',amTxt:'#F2D35B',sa:['#121E17','#16251C'],
+    ej:[['#7CD39B','#173A24'],['#F2D35B','#3A3210'],['#7DB6E8','#14304A']]}};
+let TEMA=document.documentElement.dataset.theme==='dark'?'dark':'light';
+const C=Object.assign({},PAL[TEMA]);
 const EJES=[
   {id:1,corto:'Salud',nombre:'Salud y rehabilitación',largo:'Salud, habilitación y rehabilitación integral',icono:'fa-hand-holding-medical',c:C.verde,ct:'#055B2A',cbg:'#E3F0E7',peso:38.79,nAcc:9},
-  {id:2,corto:'Educación',nombre:'Educación e inclusión',largo:'Fortalecimiento a la educación e inclusión social',icono:'fa-graduation-cap',c:C.amarillo,ct:'#8F7200',cbg:'#FBF1C7',peso:26.72,nAcc:5},
+  {id:2,corto:'Educación',nombre:'Educación e inclusión',largo:'Fortalecimiento a la educación e inclusión social',icono:'fa-graduation-cap',c:C.amarillo,ct:C.amTxt,cbg:'#FBF1C7',peso:26.72,nAcc:5},
   {id:3,corto:'Participación',nombre:'Participación y derechos',largo:'Acceso, inclusión laboral, participación y justicia',icono:'fa-people-arrows',c:C.azul,ct:'#17588F',cbg:'#E1EDF8',peso:34.48,nAcc:8}
 ];
+function aplicarPaleta(){Object.assign(C,PAL[TEMA]);EJES.forEach((e,i)=>{e.c=[C.verde,C.amarillo,C.azul][i];e.ct=C.ej[i][0];e.cbg=C.ej[i][1]});
+  if(typeof POB!=='undefined')POB.grupos.forEach((g,i)=>g.c=[C.verde,C.amarillo,C.azul,'#7FA48C'][i])}
 const VIGS=[2024,2025,2026];
 const ACCN={'1.3.1':'Detección temprana','1.3.2':'Reducción de NBI','1.3.3':'Afiliación en salud','1.3.4':'Registro y certificación','1.3.5':'Acceso a rehabilitación','1.3.6':'Equipo de la UAI','1.3.7':'Satisfacción de usuarios','1.3.8':'Accesibilidad y atención educativa','1.3.9':'Entornos y familias',
  '2.1.1':'Acceso y permanencia educativa','2.1.2':'Escuela inclusiva y PIAR','2.1.3':'Formación y cultura inclusiva','2.1.4':'Deporte y sensibilización','2.1.5':'Difusión y participación social',
@@ -78,6 +86,7 @@ const LOGROS=[
 ];
 const METAS=[['296','Apoyo terapéutico y pedagógico en la UAI','100 % · 243 personas con discapacidad'],['299','Subsidio monetario','Meta superada · 174 PcD o cuidadores'],['298','Certificación y RLCPD','Dos acciones anuales de registro · 65 PcD'],['300','Semana de la Discapacidad','Sensibilización a toda la comunidad · 243 PcD'],['170','Docentes en DUA y PIAR','Capacitación y acompañamiento · 250 personas'],['268','Salud mental','Estrategia municipal · 6.230 beneficiarios']];
 
+aplicarPaleta();
 /* ======================= UTILIDADES ======================= */
 const $=s=>document.querySelector(s);
 const fmt=(n,d=0)=>Number(n).toLocaleString('es-CO',{minimumFractionDigits:d,maximumFractionDigits:d});
@@ -86,7 +95,7 @@ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const ejeDe=id=>EJES[id-1];
 const S={vig:2026,eje:0,acc:null,dep:null,ejeModo:'cumpl',logCat:'',logQ:'',actQ:'',actDep:'',actEst:'',sort:['cod',1],page:0};
 let charts=[];
-const chart=(el,opt)=>{const c=echarts.init(el,null,{renderer:'canvas'});c.setOption(Object.assign({textStyle:{fontFamily:"'Source Sans 3', system-ui, sans-serif"},animationDuration:900,animationEasing:'cubicOut'},opt));charts.push(c);return c};
+const chart=(el,opt)=>{const c=echarts.init(el,null,{renderer:'canvas'});c.setOption(Object.assign({textStyle:{fontFamily:"'Source Sans 3', system-ui, sans-serif",color:C.tinta},animationDuration:900,animationEasing:'cubicOut'},opt));charts.push(c);return c};
 const TT={backgroundColor:'#022E15',borderWidth:0,padding:[10,14],textStyle:{color:'#fff',fontSize:13},extraCssText:'border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.25)'};
 function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove('on'),1800)}
 function contar(root){root.querySelectorAll('[data-n]').forEach(el=>{const fin=+el.dataset.n,dec=+(el.dataset.d||0),pre=el.dataset.pre||'',suf=el.dataset.suf||'';const t0=performance.now();
@@ -177,31 +186,31 @@ function vInicio(v){
   <div class="row c4" id="logrosTop"></div>`;
 
   chart($('#gauge'),{series:[{type:'gauge',startAngle:205,endAngle:-25,min:0,max:100,radius:'100%',center:['50%','60%'],progress:{show:true,width:20,roundCap:true,itemStyle:{color:new echarts.graphic.LinearGradient(0,0,1,0,[{offset:0,color:C.amarillo},{offset:1,color:e?e.c:C.verde}])}},
-    axisLine:{roundCap:true,lineStyle:{width:20,color:[[1,'#EAF0EC']]}},axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},pointer:{show:false},anchor:{show:false},title:{show:false},
-    detail:{valueAnimation:true,offsetCenter:[0,'5%'],fontSize:38,fontWeight:800,fontFamily:'Montserrat',color:C.verde,formatter:v=>fmt(v,1)+' %'},data:[{value:+cum.toFixed(1)}]}]});
+    axisLine:{roundCap:true,lineStyle:{width:20,color:[[1,C.track]]}},axisTick:{show:false},splitLine:{show:false},axisLabel:{show:false},pointer:{show:false},anchor:{show:false},title:{show:false},
+    detail:{valueAnimation:true,offsetCenter:[0,'5%'],fontSize:38,fontWeight:800,fontFamily:'Montserrat',color:C.acc,formatter:v=>fmt(v,1)+' %'},data:[{value:+cum.toFixed(1)}]}]});
 
   const sunData=EJES.filter(x=>!S.eje||x.id===S.eje).map(x=>({name:x.nombre,ejeId:x.id,itemStyle:{color:x.c},
     children:Object.values(g.acc).filter(a=>a.e===x.id&&a.c>0).map(a=>({name:a.a+' '+a.nom,value:Math.max(1,a.nVis),acc:a.a,cum:a.c,itemStyle:{color:x.c,opacity:.55+.45*a.c/100}}))}));
   const sun=chart($('#sun'),{tooltip:Object.assign({formatter:p=>p.data.acc?`<b>Acción ${esc(p.data.name)}</b><br>Cumplimiento: ${pct(p.data.cum)}<br>${p.value} actividades con avance`:`<b>${esc(ejeDe(p.data.ejeId).largo)}</b>`},TT),
-    series:[{type:'sunburst',data:sunData,radius:['18%','96%'],sort:null,itemStyle:{borderColor:'#fff',borderWidth:2,borderRadius:4},
+    series:[{type:'sunburst',data:sunData,radius:['18%','96%'],sort:null,itemStyle:{borderColor:C.bd,borderWidth:2,borderRadius:4},
       label:{rotate:'radial',fontSize:10.5,color:'#fff',fontWeight:600,minAngle:12,formatter:p=>p.data.acc?p.data.acc:''},
       levels:[{},{r0:'18%',r:'40%',label:{rotate:'tangential',fontSize:10,fontWeight:800,minAngle:30,formatter:p=>'Eje '+p.data.ejeId}},{r0:'40%',r:'96%'}],emphasis:{focus:'ancestor'}}]});
   sun.on('click',p=>{if(p.data&&p.data.acc)modalAcc(g.acc[p.data.acc]);else if(p.data&&p.data.ejeId)setEje(p.data.ejeId)});
 
   const tv=VIGS.map(y=>e?AGG[y].ejes[e.id].cumpl:AGG[y].cumpl);
   const tray=chart($('#tray'),{tooltip:Object.assign({trigger:'axis',formatter:p=>`<b>Vigencia ${vigTxt(+p[0].name)}</b><br>Cumplimiento: ${pct(p[0].value)}<br>${AGG[+p[0].name].acts.filter(VIS).length} actividades con avance`},TT),
-    grid:{left:10,right:16,top:30,bottom:6,containLabel:true},xAxis:{type:'category',data:VIGS.map(String),axisTick:{show:false},axisLine:{lineStyle:{color:'#DDE5DF'}},axisLabel:{color:C.tinta,fontWeight:700,formatter:v=>v==='2026'?'2026*':v}},
+    grid:{left:10,right:16,top:30,bottom:6,containLabel:true},xAxis:{type:'category',data:VIGS.map(String),axisTick:{show:false},axisLine:{lineStyle:{color:C.axis}},axisLabel:{color:C.tinta,fontWeight:700,formatter:v=>v==='2026'?'2026*':v}},
     yAxis:{type:'value',show:false,max:118,min:0},
     series:[{type:'bar',barMaxWidth:46,label:{show:true,position:'top',fontWeight:800,fontFamily:'Montserrat',color:C.tinta,formatter:p=>pct(p.value)},
-      data:tv.map((v,i)=>({value:+v.toFixed(1),itemStyle:{borderRadius:[10,10,0,0],color:VIGS[i]===S.vig?(e?e.c:C.verde):'#C9DCCF'}}))}],
+      data:tv.map((v,i)=>({value:+v.toFixed(1),itemStyle:{borderRadius:[10,10,0,0],color:VIGS[i]===S.vig?(e?e.c:C.verde):C.dim}}))}],
     graphic:[{type:'text',right:6,bottom:0,style:{text:'* corte octubre',fontSize:11,fill:C.gris}}]});
   tray.on('click',p=>setVig(+p.name));
 
   const ejesV=EJES.filter(x=>!S.eje||x.id===S.eje);
   chart($('#sem'),{tooltip:Object.assign({trigger:'axis',axisPointer:{type:'shadow'}},TT),legend:{top:0,right:0,icon:'roundRect',itemWidth:12,textStyle:{color:C.gris}},
     grid:{left:10,right:10,top:40,bottom:10,containLabel:true},
-    xAxis:{type:'category',data:ejesV.map(x=>x.nombre),axisTick:{show:false},axisLine:{lineStyle:{color:'#DDE5DF'}},axisLabel:{color:C.tinta,fontWeight:600,fontSize:13,interval:0}},
-    yAxis:{type:'value',splitLine:{lineStyle:{color:'#EEF2EF'}},axisLabel:{color:C.gris}},
+    xAxis:{type:'category',data:ejesV.map(x=>x.nombre),axisTick:{show:false},axisLine:{lineStyle:{color:C.axis}},axisLabel:{color:C.tinta,fontWeight:600,fontSize:13,interval:0}},
+    yAxis:{type:'value',splitLine:{lineStyle:{color:C.grid}},axisLabel:{color:C.gris}},
     series:[{name:'Semestre 1',type:'bar',barMaxWidth:46,itemStyle:{borderRadius:[8,8,0,0],color:C.verde},label:{show:true,position:'top',fontWeight:800,color:C.tinta},data:ejesV.map(x=>g.acts.filter(a=>a.e===x.id&&a.s1>0).length)},
             {name:'Semestre 2',type:'bar',barMaxWidth:46,itemStyle:{borderRadius:[8,8,0,0],color:C.amarillo},label:{show:true,position:'top',fontWeight:800,color:C.tinta},data:ejesV.map(x=>g.acts.filter(a=>a.e===x.id&&a.s2>0).length)}]});
 
@@ -239,7 +248,7 @@ function vAvance(v){
   const ac=chart($('#accChart'),{tooltip:Object.assign({formatter:p=>{const x=g.acc[p.data.acc];return `<b>Acción ${x.a} · ${esc(x.nom)}</b><br>Cumplimiento: ${pct(x.c)}<br>${x.nVis} actividades con avance`}},TT),
     grid:{left:6,right:56,top:6,bottom:6,containLabel:true},xAxis:{type:'value',max:100,show:false},
     yAxis:{type:'category',inverse:true,data:accs.map(x=>x.a+'  '+x.nom),axisTick:{show:false},axisLine:{show:false},axisLabel:{color:C.tinta,fontWeight:600,fontSize:12.5}},
-    series:[{type:'bar',barMaxWidth:22,showBackground:true,backgroundStyle:{color:'#F1F5F2',borderRadius:8},label:{show:true,position:'right',fontWeight:800,color:C.tinta,formatter:p=>fmt(p.value,p.value%1?1:0)+' %'},data:mk()}]});
+    series:[{type:'bar',barMaxWidth:22,showBackground:true,backgroundStyle:{color:C.track,borderRadius:8},label:{show:true,position:'right',color:C.tinta,fontWeight:800,color:C.tinta,formatter:p=>fmt(p.value,p.value%1?1:0)+' %'},data:mk()}]});
   ac.on('click',p=>{S.acc=p.data.acc;pintarDet();ac.setOption({series:[{data:mk()}]})});
   function pintarDet(){const x=g.acc[S.acc];if(!x){$('#detA').innerHTML='';return}const e=ejeDe(x.e);
     $('#detA').innerHTML=`<span class="pill" style="background:${e.cbg};color:${e.ct}">${e.nombre} · Acción ${x.a}</span><h4 style="margin-top:8px">${esc(x.nom)}</h4><p class="desc">${esc(x.txt)}</p>
@@ -253,7 +262,7 @@ function vAvance(v){
     $('#subE').textContent=m==='cumpl'?'Cumplimiento del plan de acción por eje y vigencia (%)':'Avance ponderado por eje y vigencia (%)';
     eb.setOption({tooltip:Object.assign({trigger:'axis',axisPointer:{type:'shadow'},valueFormatter:v=>pct(v)},TT),legend:{top:0,right:0,icon:'roundRect',itemWidth:12,textStyle:{color:C.gris}},
       grid:{left:10,right:10,top:40,bottom:10,containLabel:true},
-      xAxis:{type:'category',data:EJES.map(e=>e.nombre),axisTick:{show:false},axisLine:{lineStyle:{color:'#DDE5DF'}},axisLabel:{color:C.tinta,fontWeight:600,interval:0}},
+      xAxis:{type:'category',data:EJES.map(e=>e.nombre),axisTick:{show:false},axisLine:{lineStyle:{color:C.axis}},axisLabel:{color:C.tinta,fontWeight:600,interval:0}},
       yAxis:{type:'value',show:false,max:118},
       series:VIGS.map((y,i)=>({name:vigTxt(y),type:'bar',barMaxWidth:30,label:{show:true,position:'top',fontSize:11,fontWeight:800,color:C.tinta,formatter:p=>fmt(p.value,0)},
         itemStyle:{borderRadius:[6,6,0,0],color:['#9FC3AC','#4F9A6C',C.verde][i]},
@@ -262,7 +271,7 @@ function vAvance(v){
 
   const rl=accs.length>=3?accs:Object.values(g.acc).filter(x=>x.c>0);
   chart($('#radar'),{tooltip:Object.assign({},TT),radar:{indicator:rl.map(x=>({name:x.a,max:100})),radius:'70%',splitNumber:4,axisName:{color:C.gris,fontWeight:700},
-    splitArea:{areaStyle:{color:['#FAFCFB','#F2F7F4']}},splitLine:{lineStyle:{color:'#E1E8E3'}},axisLine:{lineStyle:{color:'#E1E8E3'}}},
+    splitArea:{areaStyle:{color:C.sa}},splitLine:{lineStyle:{color:C.grid}},axisLine:{lineStyle:{color:C.grid}}},
     series:[{type:'radar',symbolSize:7,data:[{value:rl.map(x=>+x.c.toFixed(1)),name:'Cumplimiento (%)',areaStyle:{color:'rgba(5,91,42,.22)'},lineStyle:{color:S.eje?ejeDe(S.eje).c:C.verde,width:2.5},itemStyle:{color:S.eje?ejeDe(S.eje).c:C.verde}}]}]});
 }
 
@@ -285,10 +294,10 @@ function vLogros(v){
   const base=LOGROS.filter(x=>x[0]===S.vig&&(!S.eje||x[1]===S.eje));
   const cc=chart($('#catChart'),{tooltip:Object.assign({},TT),grid:{left:6,right:40,top:6,bottom:6,containLabel:true},xAxis:{type:'value',show:false},
     yAxis:{type:'category',inverse:true,data:CATS.map(c=>c[0]),axisTick:{show:false},axisLine:{show:false},axisLabel:{color:C.tinta,fontWeight:600}},
-    series:[{type:'bar',barMaxWidth:22,label:{show:true,position:'right',fontWeight:800},data:CATS.map((c,i)=>({value:base.filter(x=>x[3]===c[0]).length,itemStyle:{borderRadius:8,color:[C.verde,C.amarillo,C.azul,C.verde2,'#C9A100','#0F4C81'][i]}}))}]});
+    series:[{type:'bar',barMaxWidth:22,label:{show:true,position:'right',color:C.tinta,fontWeight:800},data:CATS.map((c,i)=>({value:base.filter(x=>x[3]===c[0]).length,itemStyle:{borderRadius:8,color:[C.verde,C.amarillo,C.azul,C.verde2,'#C9A100','#0F4C81'][i]}}))}]});
   cc.on('click',p=>{S.logCat=p.name;render()});
   chart($('#cifras'),{tooltip:Object.assign({valueFormatter:v=>fmt(v)},TT),series:[{type:'treemap',roam:false,nodeClick:false,breadcrumb:{show:false},width:'100%',height:'100%',
-    label:{fontWeight:700,fontSize:12.5,formatter:p=>`${p.name}\n${fmt(p.value)}`},itemStyle:{borderColor:'#fff',borderWidth:3,gapWidth:3,borderRadius:8},
+    label:{fontWeight:700,fontSize:12.5,formatter:p=>`${p.name}\n${fmt(p.value)}`},itemStyle:{borderColor:C.bd,borderWidth:3,gapWidth:3,borderRadius:8},
     data:ATN.map((x,i)=>({name:x[0],value:x[1],itemStyle:{color:[C.verde,C.verde2,'#2E8B57',C.amarillo,'#C9A100',C.azul,'#0F4C81','#4F9A6C','#7FA48C','#17588F'][i%10]}}))}]});
 }
 
@@ -314,14 +323,14 @@ function vPoblacion(v){
   <div class="card" style="font-size:13.5px;color:var(--gris)"><i class="fa-solid fa-calculator" style="color:var(--verde)"></i> <b>Cómo se estima:</b> se parte de una población municipal de cerca de 28.000 habitantes y de las cifras reportadas en la matriz 2026 y en el Plan de Desarrollo (metas 296, 298 y 299). Como una misma persona participa en varios programas, se toma la población atendida de mayor cobertura en cada grupo y se suman los grupos distintos. Resultado: ≈ ${fmt(tot)} personas vinculadas, el ${pct(tot/POB.hab*100)} de los habitantes.</div>`;
   let k=0;
   $('#picto').innerHTML=POB.grupos.map(g=>{const n=Math.round(g.n/10);let ic='';for(let i=0;i<n;i++)ic+=`<i class="fa-solid ${g.i} on" title="${esc(g.g)}" style="color:${g.c};transition-delay:${(k++)*4}ms"></i>`;
-    return `<div class="pg"><div class="pgh"><b style="color:${g.c===C.amarillo?'#8F7200':g.c}">${esc(g.g)}</b><span>≈ ${fmt(g.n)} personas</span></div><div class="pgi" style="grid-template-columns:repeat(17,1fr)">${ic}</div></div>`}).join('');
+    return `<div class="pg"><div class="pgh"><b style="color:${g.c===C.amarillo?C.amTxt:g.c}">${esc(g.g)}</b><span>≈ ${fmt(g.n)} personas</span></div><div class="pgi" style="grid-template-columns:repeat(17,1fr)">${ic}</div></div>`}).join('');
   chart($('#comp'),{tooltip:Object.assign({formatter:p=>`<b>${esc(p.name)}</b><br>≈ ${fmt(p.value)} personas (${fmt(p.percent,0)} %)`},TT),legend:{bottom:0,icon:'circle',itemWidth:9,textStyle:{color:C.gris}},
-    series:[{type:'pie',radius:['50%','78%'],center:['50%','42%'],itemStyle:{borderColor:'#fff',borderWidth:3,borderRadius:8},label:{show:true,position:'inside',formatter:'{d}%',color:'#fff',fontWeight:800},
+    series:[{type:'pie',radius:['44%','70%'],center:['50%','38%'],itemStyle:{borderColor:C.bd,borderWidth:3,borderRadius:8},label:{show:true,position:'inside',formatter:'{d}%',color:'#fff',fontWeight:800},
       data:POB.grupos.map(g=>({name:g.g,value:g.n,itemStyle:{color:g.c}}))}],
-    graphic:[{type:'text',left:'center',top:'35%',style:{text:'≈ '+fmt(tot),fontSize:24,fontWeight:800,fontFamily:'Montserrat',fill:C.verde}},{type:'text',left:'center',top:'45%',style:{text:'personas',fontSize:12,fill:C.gris}}]});
+    graphic:[{type:'text',left:'center',top:'31%',style:{text:'≈ '+fmt(tot),fontSize:24,fontWeight:800,fontFamily:'Montserrat',fill:C.acc}},{type:'text',left:'center',top:'41%',style:{text:'personas',fontSize:12,fill:C.gris}}]});
   chart($('#prog'),{tooltip:Object.assign({valueFormatter:v=>fmt(v)},TT),grid:{left:6,right:50,top:6,bottom:6,containLabel:true},xAxis:{type:'value',show:false},
     yAxis:{type:'category',inverse:true,data:ATN.map(x=>x[0]),axisTick:{show:false},axisLine:{show:false},axisLabel:{color:C.tinta,fontWeight:600}},
-    series:[{type:'bar',barMaxWidth:20,label:{show:true,position:'right',fontWeight:800,formatter:p=>fmt(p.value)},data:ATN.map((x,i)=>({value:x[1],itemStyle:{borderRadius:8,color:i%2?C.azul:C.verde}}))}]});
+    series:[{type:'bar',barMaxWidth:20,label:{show:true,position:'right',color:C.tinta,fontWeight:800,formatter:p=>fmt(p.value)},data:ATN.map((x,i)=>({value:x[1],itemStyle:{borderRadius:8,color:i%2?C.azul:C.verde}}))}]});
   $('#grupos').innerHTML=POB.grupos.map(g=>`<div class="meta"><span class="cod" style="background:${g.c};${g.c===C.amarillo?'color:#15201A':''}"><i class="fa-solid ${g.i}"></i></span><div><b>${esc(g.g)} · ≈ ${fmt(g.n)}</b><span>${esc(g.d)}</span></div></div>`).join('');
 }
 
@@ -341,7 +350,7 @@ function vActividades(v){
   function base(){const q=S.actQ.trim().toLowerCase();return filtAct().filter(a=>(!S.actDep||a.r===S.actDep)&&(!q||(a.cod+' '+a.d+' '+a.r+' '+(ACCN[a.a]||'')).toLowerCase().includes(q)))}
   function pintar(){
     const b=base();const cnt=ESTADOS.map(([n])=>b.filter(a=>estado(a.c)===n).length);
-    $('#ests').innerHTML=`<button class="${!S.actEst?'on':''}" data-e=""><b>${b.length}</b><small>Todas</small></button>`+ESTADOS.map(([n,c],i)=>`<button class="${S.actEst===n?'on':''}" data-e="${n}"><b style="color:${c===C.amarillo?'#8F7200':c}">${cnt[i]}</b><small>${n}</small></button>`).join('');
+    $('#ests').innerHTML=`<button class="${!S.actEst?'on':''}" data-e=""><b>${b.length}</b><small>Todas</small></button>`+ESTADOS.map(([n,c],i)=>`<button class="${S.actEst===n?'on':''}" data-e="${n}"><b style="color:${c===C.amarillo?C.amTxt:c}">${cnt[i]}</b><small>${n}</small></button>`).join('');
     let rows=b.filter(a=>!S.actEst||estado(a.c)===S.actEst);
     const [k,dir]=S.sort;const key=a=>k==='est'?estado(a.c):a[k];
     rows.sort((x,y)=>{const A=key(x),B=key(y);if(typeof A==='number'||typeof B==='number')return((A??-1)-(B??-1))*dir;return String(A).localeCompare(String(B),'es',{numeric:true})*dir});
@@ -380,7 +389,7 @@ function vDependencias(v){
   function pintarChart(){dc.setOption({tooltip:Object.assign({formatter:p=>{const d=deps[p.dataIndex];return `<b>${esc(d.d)}</b><br>${d.n} actividades · ${d.acc} acciones<br>Cumplimiento promedio: ${pct(d.c)}`}},TT),
     grid:{left:6,right:40,top:6,bottom:6,containLabel:true},xAxis:{type:'value',show:false},
     yAxis:{type:'category',inverse:true,data:deps.map(d=>d.d),axisTick:{show:false},axisLine:{show:false},axisLabel:{color:C.tinta,fontWeight:600,width:190,overflow:'break'}},
-    series:[{type:'bar',barMaxWidth:22,label:{show:true,position:'right',fontWeight:800},
+    series:[{type:'bar',barMaxWidth:22,label:{show:true,position:'right',color:C.tinta,fontWeight:800},
       data:deps.map((d,i)=>({value:d.n,itemStyle:{borderRadius:8,color:[C.verde,C.amarillo,C.azul][i%3],opacity:d.d===S.dep?1:.45,borderColor:d.d===S.dep?C.tinta:'transparent',borderWidth:d.d===S.dep?2:0}}))}]},true)}
   pintarChart();
   dc.on('click',p=>{S.dep=deps[p.dataIndex].d;pintarChart();pintarDet()});
@@ -402,6 +411,10 @@ addEventListener('keydown',ev=>{if(ev.key==='Escape')cerrar()});
 $('#modalBody').addEventListener('click',ev=>{const a=ev.target.closest('[data-act]');if(a)modalAct(ACT[+a.dataset.act])});
 $('#burger').onclick=()=>{$('#sb').classList.add('open');$('#sbBack').classList.add('open')};
 $('#sbBack').onclick=()=>{$('#sb').classList.remove('open');$('#sbBack').classList.remove('open')};
+function iconoTema(){const b=$('#tema');b.innerHTML=`<i class="fa-solid ${TEMA==='dark'?'fa-sun':'fa-moon'}"></i>`;b.title=TEMA==='dark'?'Cambiar a tema claro':'Cambiar a tema oscuro'}
+$('#tema').onclick=()=>{TEMA=TEMA==='dark'?'light':'dark';document.documentElement.dataset.theme=TEMA;try{localStorage.setItem('tema',TEMA)}catch(e){}
+  aplicarPaleta();iconoTema();barraUI();render();toast(TEMA==='dark'?'Tema oscuro activado':'Tema claro activado')};
+iconoTema();
 $('#fs').onclick=()=>{if(!document.fullscreenElement)document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();else document.exitFullscreen()};
 if(!location.hash)history.replaceState(null,'','#/inicio');
 render();

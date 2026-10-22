@@ -12,7 +12,7 @@ Tablero interactivo con el avance, los logros y la población beneficiada de la 
 - **Explorador de actividades:** tabla con búsqueda, filtros, orden por columna y ficha de cada actividad.
 - **Dependencias y PDT:** gestión por dependencia y metas del Plan de Desarrollo Territorial.
 
-La vigencia y el eje seleccionados en la barra superior se aplican a todas las páginas.
+La vigencia y el eje seleccionados en la barra superior se aplican a todas las páginas. El botón de luna o sol cambia entre tema claro y oscuro; la elección se recuerda en el navegador.
 
 ## Metodología
 - Cumplimiento de cada actividad: ejecución de los semestres 1 y 2 sobre lo programado, con un máximo de 100 %.

@@ -5,11 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tablero PP Discapacidad · Tenjo</title>
 <meta name="description" content="Tablero interactivo de seguimiento a la Política Pública de Inclusión para Personas con Discapacidad y sus Familias del municipio de Tenjo, vigencias 2024 a 2026.">
+<script>try{var t=localStorage.getItem("tema")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.dataset.theme=t}catch(e){}</script>
 <link rel="icon" href="assets/escudo-tenjo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<link rel="stylesheet" href="css/app.css?v=1">
+<link rel="stylesheet" href="css/app.css?v=2">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
 </head>
 <body>
@@ -40,6 +41,7 @@
       <div class="ttl"><small id="crumb">Tablero de seguimiento</small><h1 id="pageTitle">Resumen ejecutivo</h1></div>
       <div class="vig" id="vig" role="group" aria-label="Vigencia"></div>
       <div class="filtro" id="filtro" role="group" aria-label="Filtrar por eje"></div>
+      <button class="ico-btn tema-btn" id="tema" aria-label="Cambiar tema"></button>
       <button class="ico-btn" id="fs" title="Pantalla completa" aria-label="Pantalla completa"><i class="fa-solid fa-expand"></i></button>
     </header>
     <div class="view" id="view"></div>
@@ -58,7 +60,7 @@
 </div>
 <div class="toast" id="toast"></div>
 
-<script src="data/datos.js?v=1"></script>
-<script src="js/app.js?v=1"></script>
+<script src="data/datos.js?v=2"></script>
+<script src="js/app.js?v=2"></script>
 </body>
 </html>
