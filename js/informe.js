@@ -139,8 +139,7 @@ async function generar(o){
       ej.map(x=>{const s=g.ejes[x.id];return [`${x.id}. ${x.largo}`,T.pct(x.peso,1),`${s.gest} de ${x.nAcc}`,T.pct(s.cumpl),T.pct(s.pond)]}),
       {columnStyles:{0:{cellWidth:78},1:{halign:'center'},2:{halign:'center'},3:{halign:'center',fontStyle:'bold'},4:{halign:'center'}}});
     if(accs.length){
-      espacio(20);doc.setTextColor(...RGB.tinta);doc.setFont('helvetica','bold');doc.setFontSize(10.5);doc.text(txt(`Cumplimiento por acción · ${T.vigTxt(o.vig)}`),M,y);y+=4;
-      const hh=Math.max(220,accs.length*26+30);
+      const hh=Math.max(220,accs.length*26+30);espacio(Math.min(CW*hh/900+12,H-52));doc.setTextColor(...RGB.tinta);doc.setFont('helvetica','bold');doc.setFontSize(10.5);doc.text(txt(`Cumplimiento por acción · ${T.vigTxt(o.vig)}`),M,y);y+=4;
       img(chartImg({grid:{left:6,right:60,top:6,bottom:6,containLabel:true},xAxis:{type:'value',max:100,show:false},
         yAxis:{type:'category',inverse:true,data:accs.map(x=>x.a+'  '+T.ACCN[x.a]),axisTick:{show:false},axisLine:{show:false},axisLabel:{color:TX,fontSize:12.5}},
         series:[{type:'bar',barMaxWidth:18,showBackground:true,backgroundStyle:{color:'#F1F5F2',borderRadius:6},label:{show:true,position:'right',color:TX,fontWeight:'bold',formatter:p=>T.fmt(p.value,0)+' %'},
